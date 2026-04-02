@@ -21,7 +21,7 @@ nsis:
   oneClick: false
   allowElevation: true
   allowToChangeInstallationDirectory: false
-  createDesktopShortcut: ask
+  createDesktopShortcut: true
   createStartMenuShortcut: true
   runAfterFinish: true
 mac:
