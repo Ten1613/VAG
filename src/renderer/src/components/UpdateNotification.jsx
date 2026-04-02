@@ -8,11 +8,12 @@
 import { useState, useEffect } from 'react'
 
 function UpdateNotification() {
-  // 'hidden' | 'available' | 'downloading' | 'downloaded'
+  // 'hidden' | 'available' | 'downloading' | 'downloaded' | 'error'
   const [state, setState] = useState('hidden')
   const [updateInfo, setUpdateInfo] = useState(null)
   const [progress, setProgress] = useState(0)
   const [dismissed, setDismissed] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
   useEffect(() => {
     if (!window.electronAPI?.updater) return
@@ -33,10 +34,17 @@ function UpdateNotification() {
       setProgress(100)
     })
 
+    const unsubError = window.electronAPI.updater.onError((err) => {
+      console.error('[UpdateNotification] 更新錯誤：', err)
+      setErrorMsg(String(err))
+      setState('error')
+    })
+
     return () => {
       unsubAvailable()
       unsubProgress()
       unsubDownloaded()
+      unsubError()
     }
   }, [])
 
@@ -55,6 +63,20 @@ function UpdateNotification() {
 
   // 已關閉或沒有動作時，不顯示任何東西
   if (state === 'hidden' || dismissed) return null
+
+  // 錯誤狀態：顯示除錯用提示（紅色小卡）
+  if (state === 'error') {
+    return (
+      <div className="fixed bottom-6 right-6 z-50 w-80 animate-slide-up">
+        <div className="bg-[#1a0a0a] border border-red-500/30 rounded-xl shadow-2xl p-4">
+          <div className="h-0.5 w-full bg-gradient-to-r from-red-500 to-rose-400 mb-4 -mt-4 rounded-t-xl" />
+          <p className="text-[12px] font-semibold text-red-400 mb-1">⚠ 更新檢查失敗</p>
+          <p className="text-[11px] text-[#71717a] break-all leading-relaxed">{errorMsg}</p>
+          <button onClick={() => setDismissed(true)} className="mt-3 text-[11px] text-[#52525b] hover:text-[#a3a3a3]">關閉</button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div

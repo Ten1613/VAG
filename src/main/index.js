@@ -259,8 +259,15 @@ app.whenReady().then(() => {
 
   // 註冊與啟動自動更新服務
   setupAutoUpdater()
-  setTimeout(() => {
-    autoUpdater.checkForUpdates()
+  setTimeout(async () => {
+    try {
+      console.log('[AutoUpdater] 開始檢查更新...')
+      await autoUpdater.checkForUpdates()
+    } catch (err) {
+      console.error('[AutoUpdater] 檢查更新失敗：', err.message)
+      // 將錯誤傳送到前端以便除錯
+      mainWindow?.webContents.send('updater:error', err.message)
+    }
   }, 3000) // 延遲 3 秒後檢查更新，避免拖慢視窗啟動
 
   // 初次啟動時自動偵測 Riot Client 路徑
