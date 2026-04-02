@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react'
 
-function Sidebar({ currentPage, onNavigate }) {
+function Sidebar({ currentPage, onNavigate, onShowUpdate }) {
   // 'none', 'available', 'downloading', 'downloaded'
   const [updateStatus, setUpdateStatus] = useState('none')
+  const [appVersion, setAppVersion] = useState('')
 
   useEffect(() => {
+    // 取得當前版本號
+    if (window.electronAPI?.getVersion) {
+      window.electronAPI.getVersion().then((v) => setAppVersion(v || ''))
+    }
+
     if (!window.electronAPI?.updater) return
 
     const unsubAvailable = window.electronAPI.updater.onUpdateAvailable(() => {
       setUpdateStatus('available')
     })
-    
+
     const unsubProgress = window.electronAPI.updater.onDownloadProgress(() => {
       setUpdateStatus('downloading')
     })
@@ -25,15 +31,6 @@ function Sidebar({ currentPage, onNavigate }) {
       unsubDownloaded()
     }
   }, [])
-
-  const handleUpdateClick = () => {
-    if (updateStatus === 'available') {
-      window.electronAPI.updater.download()
-      setUpdateStatus('downloading')
-    } else if (updateStatus === 'downloaded') {
-      window.electronAPI.updater.install()
-    }
-  }
 
   const navItems = [
     {
@@ -101,44 +98,66 @@ function Sidebar({ currentPage, onNavigate }) {
       </nav>
 
       {/* ===== 底部系統資訊與更新提示 ===== */}
-      <div className="p-4">
+      <div className="p-4 space-y-2">
+        {/* 版本號 */}
+        {appVersion && (
+          <p className="text-[10px] text-[#3f3f46] font-mono px-1">v{appVersion}</p>
+        )}
+
+        {/* System Online 狀態列 */}
         <div className="flex flex-row items-center px-3 py-2 rounded-md bg-[#0a0a0a] border border-[#262626]">
-          <div className="flex flex-row items-center gap-2.5 flex-1">
-            <div className="w-2 h-2 rounded-full bg-green-500 shrink-0"></div>
-            <p className="text-[12px] text-[#a3a3a3] font-medium">
+          <div className="flex flex-row items-center gap-2.5 flex-1 min-w-0">
+            <div className="w-2 h-2 rounded-full bg-green-500 shrink-0 shadow-[0_0_6px_#22c55e80]"></div>
+            <p className="text-[12px] text-[#a3a3a3] font-medium truncate">
               System Online
             </p>
           </div>
 
+          {/* 更新圖標 — 在 System Online 右側 */}
           {updateStatus !== 'none' && (
             <button
-              onClick={handleUpdateClick}
+              onClick={() => onShowUpdate && onShowUpdate()}
               disabled={updateStatus === 'downloading'}
-              className={`p-1.5 rounded-md flex items-center justify-center transition-colors ${
-                updateStatus === 'available' ? 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30' :
-                updateStatus === 'downloading' ? 'bg-yellow-500/20 text-yellow-500 cursor-not-allowed' :
-                'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30'
+              className={`relative ml-2 p-1.5 rounded-md flex items-center justify-center transition-all shrink-0 ${
+                updateStatus === 'available'
+                  ? 'bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 hover:scale-110 hover:shadow-[0_0_10px_rgba(59,130,246,0.3)]'
+                  : updateStatus === 'downloading'
+                  ? 'bg-amber-500/15 text-amber-400 cursor-not-allowed'
+                  : 'bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500/25 hover:scale-110'
               }`}
               title={
-                updateStatus === 'available' ? '新版本可用，點擊下載' :
-                updateStatus === 'downloading' ? '下載中...' : '下載完成，點擊安裝並重啟'
+                updateStatus === 'available'
+                  ? '有新版本可用，點擊查看'
+                  : updateStatus === 'downloading'
+                  ? '更新下載中...'
+                  : '更新已就緒，點擊重啟安裝'
               }
             >
+              {/* 脈動圓點（僅 available 狀態）*/}
+              {updateStatus === 'available' && (
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75 animate-ping" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500" />
+                </span>
+              )}
+
+              {/* 圖標內容 */}
               {updateStatus === 'downloading' ? (
                 <svg className="animate-spin w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2.5" strokeDasharray="31.4 31.4" strokeLinecap="round" />
                 </svg>
               ) : updateStatus === 'downloaded' ? (
+                // 打勾圖標（已下載，準備安裝）
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                   <polyline points="22 4 12 14.01 9 11.01" />
                 </svg>
               ) : (
+                // 向上箭頭（有更新可用）
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="16 12 12 8 8 12" />
+                  <line x1="12" y1="16" x2="12" y2="8" />
                 </svg>
               )}
             </button>

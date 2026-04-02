@@ -12,6 +12,9 @@ const electronAPI = {
   windowMaximize: () => ipcRenderer.send('window-maximize'),
   windowClose: () => ipcRenderer.send('window-close'),
 
+  // === 應用程式資訊 ===
+  getVersion: () => ipcRenderer.invoke('get-version'),
+
   // === 帳號管理 ===
   getAccounts: () => ipcRenderer.invoke('get-accounts'),
   addAccount: (accountData) => ipcRenderer.invoke('add-account', accountData),

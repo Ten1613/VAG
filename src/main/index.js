@@ -71,6 +71,11 @@ function registerIpcHandlers() {
     mainWindow?.close()
   })
 
+  // --- 應用程式版本 ---
+  ipcMain.handle('get-version', () => {
+    return app.getVersion()
+  })
+
   // --- 帳號管理 ---
   ipcMain.handle('get-accounts', () => {
     try {

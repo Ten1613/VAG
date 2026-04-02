@@ -6,10 +6,12 @@ import Sidebar from './components/Sidebar'
 import AccountsPage from './pages/AccountsPage'
 import SettingsPage from './pages/SettingsPage'
 import DynamicBackground from './components/DynamicBackground'
+import UpdateNotification from './components/UpdateNotification'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('accounts')
   const [toast, setToast] = useState(null)
+  const [showUpdate, setShowUpdate] = useState(true) // true = 允許顯示，匹配 UpdateNotification 內部狀態
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type })
@@ -61,7 +63,7 @@ function App() {
         {/* ===== 雙欄式佈局區塊 ===== */}
         <div className="flex flex-row flex-1 overflow-hidden relative">
           
-          <Sidebar currentPage={currentPage} onNavigate={setCurrentPage} />
+          <Sidebar currentPage={currentPage} onNavigate={setCurrentPage} onShowUpdate={() => setShowUpdate(true)} />
 
           <main className="flex-1 overflow-y-auto px-10 py-10 bg-transparent custom-scrollbar relative">
             <div className="w-full max-w-4xl mx-auto h-full animate-fade-in" key={currentPage}>
@@ -74,6 +76,9 @@ function App() {
             </div>
           </main>
         </div>
+
+        {/* ===== 更新遭知彈窗 ===== */}
+        <UpdateNotification key={showUpdate} />
 
         {/* ===== 極簡 Toast ===== */}
         {toast && (
