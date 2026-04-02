@@ -11,6 +11,7 @@ function SettingsPage({ showToast }) {
   const [isSaving, setIsSaving] = useState(false)
   const [pathStatus, setPathStatus] = useState('unknown')
   const [openAtLogin, setOpenAtLogin] = useState(false)
+  const [desktopShortcut, setDesktopShortcut] = useState(false)
   const [appVersion, setAppVersion] = useState('')
 
   useEffect(() => {
@@ -36,12 +37,14 @@ function SettingsPage({ showToast }) {
 
   const loadSystemSettings = async () => {
     try {
-      const [loginItem, version] = await Promise.all([
+      const [loginItem, version, shortcutExists] = await Promise.all([
         window.electronAPI?.getLoginItem(),
-        window.electronAPI?.getVersion()
+        window.electronAPI?.getVersion(),
+        window.electronAPI?.desktopShortcutExists()
       ])
       if (loginItem) setOpenAtLogin(loginItem.openAtLogin)
       if (version) setAppVersion(version)
+      if (shortcutExists !== undefined) setDesktopShortcut(shortcutExists)
     } catch (error) {
       console.error('System settings failed:', error)
     }
@@ -54,6 +57,22 @@ function SettingsPage({ showToast }) {
       showToast(value ? '已設定為開機自動啟動' : '已關閉開機自動啟動')
     } catch (error) {
       showToast('設定失敗：' + error.message, 'error')
+    }
+  }
+
+  const handleToggleDesktopShortcut = async (value) => {
+    try {
+      setDesktopShortcut(value)
+      const result = await window.electronAPI?.setDesktopShortcut({ create: value })
+      if (result?.success) {
+        showToast(value ? '已建立桌面捷徑' : '已移除桌面捷徑')
+      } else {
+        showToast('操作失敗：' + (result?.error || '未知錯誤'), 'error')
+        setDesktopShortcut(!value) // 回滾狀態
+      }
+    } catch (error) {
+      showToast('操作失敗：' + error.message, 'error')
+      setDesktopShortcut(!value)
     }
   }
 
@@ -268,6 +287,30 @@ function SettingsPage({ showToast }) {
             <span
               className={`inline-block h-4 w-4 transform rounded-full transition-transform duration-200 ${
                 openAtLogin ? 'translate-x-6 bg-black' : 'translate-x-1 bg-[#71717a]'
+              }`}
+            />
+          </button>
+        </div>
+
+        {/* 分隔線 */}
+        <div className="border-t border-[#ffffff0a]" />
+
+        {/* 桌面捷徑 Toggle */}
+        <div className="flex items-center justify-between py-3">
+          <div>
+            <p className="text-[13px] font-medium text-[#ededed]">建立桌面捷徑</p>
+            <p className="text-[12px] text-[#71717a] mt-0.5">在桌面建立 VAG 的快速啟動捷徑</p>
+          </div>
+          <button
+            id="toggle-desktop-shortcut"
+            onClick={() => handleToggleDesktopShortcut(!desktopShortcut)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${
+              desktopShortcut ? 'bg-white' : 'bg-[#262626]'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full transition-transform duration-200 ${
+                desktopShortcut ? 'translate-x-6 bg-black' : 'translate-x-1 bg-[#71717a]'
               }`}
             />
           </button>

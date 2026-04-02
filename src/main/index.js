@@ -10,6 +10,7 @@ import { detectRiotClientPath } from './pathDetector'
 import { performAutoLogin, cancelAutoLogin } from './autoLogin'
 import { decrypt } from './crypto'
 import { existsSync } from 'fs'
+import { exec } from 'child_process'
 import { autoUpdater } from 'electron-updater'
 
 let mainWindow = null
@@ -88,6 +89,43 @@ function registerIpcHandlers() {
       path: process.execPath
     })
     return { success: true }
+  })
+
+  // --- 桌面捷徑 ---
+  ipcMain.handle('desktop-shortcut-exists', () => {
+    const desktopPath = app.getPath('desktop')
+    const shortcutPath = join(desktopPath, 'VAG.lnk')
+    return existsSync(shortcutPath)
+  })
+
+  ipcMain.handle('set-desktop-shortcut', (_event, { create }) => {
+    return new Promise((resolve) => {
+      const desktopPath = app.getPath('desktop')
+      const shortcutPath = join(desktopPath, 'VAG.lnk')
+      const targetPath = process.execPath
+      const workDir = join(targetPath, '..')
+
+      if (create) {
+        // 使用 PowerShell 建立 .lnk 捷徑
+        const ps = [
+          `$s = (New-Object -ComObject WScript.Shell).CreateShortcut('${shortcutPath.replace(/'/g, "''")}')`,
+          `$s.TargetPath = '${targetPath.replace(/'/g, "''")}'`,
+          `$s.WorkingDirectory = '${workDir.replace(/'/g, "''")}'`,
+          `$s.Description = 'VAG - Valorant Auto-Login'`,
+          `$s.Save()`
+        ].join('; ')
+
+        exec(`powershell -NoProfile -Command "${ps}"`, (err) => {
+          resolve({ success: !err, error: err?.message })
+        })
+      } else {
+        // 刪除捷徑
+        const ps = `if (Test-Path '${shortcutPath.replace(/'/g, "''")}') { Remove-Item '${shortcutPath.replace(/'/g, "''")}' }`
+        exec(`powershell -NoProfile -Command "${ps}"`, (err) => {
+          resolve({ success: !err, error: err?.message })
+        })
+      }
+    })
   })
 
   // --- 帳號管理 ---

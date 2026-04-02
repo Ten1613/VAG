@@ -19,6 +19,10 @@ const electronAPI = {
   getLoginItem: () => ipcRenderer.invoke('get-login-item'),
   setLoginItem: (settings) => ipcRenderer.invoke('set-login-item', settings),
 
+  // === 桌面捷徑 ===
+  desktopShortcutExists: () => ipcRenderer.invoke('desktop-shortcut-exists'),
+  setDesktopShortcut: (opts) => ipcRenderer.invoke('set-desktop-shortcut', opts),
+
   // === 帳號管理 ===
   getAccounts: () => ipcRenderer.invoke('get-accounts'),
   addAccount: (accountData) => ipcRenderer.invoke('add-account', accountData),
