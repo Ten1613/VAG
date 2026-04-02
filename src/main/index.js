@@ -76,6 +76,20 @@ function registerIpcHandlers() {
     return app.getVersion()
   })
 
+  // --- 開機自動啟動 ---
+  ipcMain.handle('get-login-item', () => {
+    const settings = app.getLoginItemSettings()
+    return { openAtLogin: settings.openAtLogin }
+  })
+
+  ipcMain.handle('set-login-item', (_event, { openAtLogin }) => {
+    app.setLoginItemSettings({
+      openAtLogin,
+      path: process.execPath
+    })
+    return { success: true }
+  })
+
   // --- 帳號管理 ---
   ipcMain.handle('get-accounts', () => {
     try {

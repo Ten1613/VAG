@@ -15,6 +15,10 @@ const electronAPI = {
   // === 應用程式資訊 ===
   getVersion: () => ipcRenderer.invoke('get-version'),
 
+  // === 開機自動啟動 ===
+  getLoginItem: () => ipcRenderer.invoke('get-login-item'),
+  setLoginItem: (settings) => ipcRenderer.invoke('set-login-item', settings),
+
   // === 帳號管理 ===
   getAccounts: () => ipcRenderer.invoke('get-accounts'),
   addAccount: (accountData) => ipcRenderer.invoke('add-account', accountData),

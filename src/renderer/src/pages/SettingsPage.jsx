@@ -10,9 +10,12 @@ function SettingsPage({ showToast }) {
   const [isDetecting, setIsDetecting] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [pathStatus, setPathStatus] = useState('unknown')
+  const [openAtLogin, setOpenAtLogin] = useState(false)
+  const [appVersion, setAppVersion] = useState('')
 
   useEffect(() => {
     loadConfig()
+    loadSystemSettings()
   }, [])
 
   const loadConfig = async () => {
@@ -28,6 +31,29 @@ function SettingsPage({ showToast }) {
     } catch (error) {
       console.error('Config failed:', error)
       setPathStatus('not-found')
+    }
+  }
+
+  const loadSystemSettings = async () => {
+    try {
+      const [loginItem, version] = await Promise.all([
+        window.electronAPI?.getLoginItem(),
+        window.electronAPI?.getVersion()
+      ])
+      if (loginItem) setOpenAtLogin(loginItem.openAtLogin)
+      if (version) setAppVersion(version)
+    } catch (error) {
+      console.error('System settings failed:', error)
+    }
+  }
+
+  const handleToggleLoginItem = async (value) => {
+    try {
+      setOpenAtLogin(value)
+      await window.electronAPI?.setLoginItem({ openAtLogin: value })
+      showToast(value ? '已設定為開機自動啟動' : '已關閉開機自動啟動')
+    } catch (error) {
+      showToast('設定失敗：' + error.message, 'error')
     }
   }
 
@@ -194,7 +220,7 @@ function SettingsPage({ showToast }) {
       </div>
 
       {/* 說明與提示 */}
-      <div className="bg-[#ffffff02] border border-[#ffffff0a] rounded-xl p-5">
+      <div className="bg-[#ffffff02] border border-[#ffffff0a] rounded-xl p-5 mb-6">
          <h4 className="text-[12px] font-semibold text-[#a1a1aa] mb-3 flex items-center gap-2">
            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="10"/>
@@ -208,6 +234,65 @@ function SettingsPage({ showToast }) {
            <li>• 如果預設在 C 槽找不到 Riot Client，請嘗試開啟檔案總管手動選擇。</li>
            <li>• 啟動登入程序後，自動綁定會完全接管鍵盤輸入，請短暫停留以確保輸入完成。</li>
          </ul>
+      </div>
+
+      {/* ===== 系統偏好設定 ===== */}
+      <div className="surface-card p-6 mb-6">
+        <div className="flex items-center gap-4 mb-6 pb-6 border-b border-[#ffffff0a]">
+          <div className="w-10 h-10 rounded-full bg-[#ffffff05] border border-[#ffffff0a] flex items-center justify-center shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+              <path d="M4.93 4.93a10 10 0 0 0 0 14.14" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-[14px] font-semibold text-[#ededed]">系統偏好</h3>
+            <p className="text-[12px] text-[#71717a] mt-0.5">控制應用程式的系統整合行為</p>
+          </div>
+        </div>
+
+        {/* 開機自動啟動 Toggle */}
+        <div className="flex items-center justify-between py-3">
+          <div>
+            <p className="text-[13px] font-medium text-[#ededed]">開機時自動啟動</p>
+            <p className="text-[12px] text-[#71717a] mt-0.5">登入 Windows 後自動在背景開啟 VAG</p>
+          </div>
+          <button
+            id="toggle-login-item"
+            onClick={() => handleToggleLoginItem(!openAtLogin)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${
+              openAtLogin ? 'bg-white' : 'bg-[#262626]'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full transition-transform duration-200 ${
+                openAtLogin ? 'translate-x-6 bg-black' : 'translate-x-1 bg-[#71717a]'
+              }`}
+            />
+          </button>
+        </div>
+      </div>
+
+      {/* ===== 關於 ===== */}
+      <div className="bg-[#ffffff02] border border-[#ffffff0a] rounded-xl p-5">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[12px] font-semibold text-[#a1a1aa]">VAG — Valorant Auto-Login</p>
+            {appVersion && (
+              <p className="text-[11px] text-[#52525b] font-mono mt-1">v{appVersion}</p>
+            )}
+          </div>
+          <a
+            href="https://github.com/Ten1613/VAG/releases"
+            target="_blank"
+            rel="noreferrer"
+            className="text-[11px] text-[#52525b] hover:text-[#a3a3a3] transition-colors"
+            onClick={(e) => { e.preventDefault(); window.electronAPI && window.open?.('https://github.com/Ten1613/VAG/releases') }}
+          >
+            Releases →
+          </a>
+        </div>
       </div>
 
     </div>
