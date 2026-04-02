@@ -15,12 +15,12 @@ const execAsync = promisify(exec)
 import { keyboard, Key, getActiveWindow, getWindows, mouse, Point } from '@nut-tree-fork/nut-js'
 
 // 設定鍵盤輸入延遲（毫秒），避免輸入太快導致遺漏
-keyboard.config.autoDelayMs = 30
+keyboard.config.autoDelayMs = 10
 
 // 輪詢設定
 const POLL_INTERVAL = 500 // 每 500ms 檢查一次視窗
 const MAX_WAIT_TIME = 60000 // 最多等待 60 秒
-const UI_RENDER_DELAY = 6000 // 【加長】給予 6 秒讓 Riot Client 的表單有更充裕的時間完全載入完成
+const UI_RENDER_DELAY = 3000 // 【加長】給予 3 秒讓 Riot Client 的表單有更充裕的時間完全載入完成
 
 // 狀態控制旗標
 let isCancelled = false
@@ -194,7 +194,7 @@ async function focusRiotWindow() {
         (title.toLowerCase().includes('riot client') || title.toLowerCase().includes('riot games'))
       ) {
         console.log(`[視窗聚焦] 找到 Riot Client 視窗：「${title}」，強制拉至前景聚焦...`)
-        
+
         // 策略 1：使用 nut.js 原生 API (但在部分 Windows 環境可能僅會閃爍工作列)
         try {
           await win.focus()
@@ -220,7 +220,7 @@ async function focusRiotWindow() {
             // 點擊 Riot Client 左上角 15px 的標題列安全區域（不會點到任何退出或切換按鈕）
             const safeX = region.left + 50
             const safeY = region.top + 15
-            
+
             // 備份並瞬間找回原本的滑鼠
             const oldMousePos = await mouse.getPosition()
             await mouse.setPosition(new Point(safeX, safeY))
