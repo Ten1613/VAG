@@ -97,7 +97,7 @@ export async function performAutoLogin(riotPath, username, password, mainWindow)
     // 建立一個先全選再貼上的輔助函式
     const selectAllAndPaste = async (text) => {
       clipboard.writeText(text)
-      await sleep(100) // 確保剪貼簿同步
+      await sleep(100) // 確保剪貼簿寫入完成
 
       // 全選 (Ctrl + A)
       await keyboard.pressKey(Key.LeftControl)
@@ -105,30 +105,24 @@ export async function performAutoLogin(riotPath, username, password, mainWindow)
       await keyboard.releaseKey(Key.A)
       await keyboard.releaseKey(Key.LeftControl)
 
-      await sleep(50)
-
       // 貼上 (Ctrl + V)
       await keyboard.pressKey(Key.LeftControl)
       await keyboard.pressKey(Key.V)
       await keyboard.releaseKey(Key.V)
       await keyboard.releaseKey(Key.LeftControl)
-
-      await sleep(150)
     }
 
     // 1. 全選並貼上帳號
     await selectAllAndPaste(username)
 
-    // 2. 按 Tab 切換到密碼欄位
+    // 2. 按 Tab 切換到密碼欄位（帳號輸入完成後不再延遲）
     sendStatus(mainWindow, '切換至密碼欄位...')
     await keyboard.pressKey(Key.Tab)
     await keyboard.releaseKey(Key.Tab)
-    await sleep(200)
 
     // 3. 全選並貼上密碼
     sendStatus(mainWindow, '正在貼上密碼...')
     await selectAllAndPaste(password)
-    await sleep(200)
 
     // 4. 按 Enter 送出登入
     await keyboard.pressKey(Key.Enter)
