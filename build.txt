@@ -1,0 +1,159 @@
+﻿
+> valorant-auto-login@1.0.0 build:win
+> npm run build && electron-builder --win
+
+
+> valorant-auto-login@1.0.0 build
+> electron-vite build
+
+[36mvite v7.3.1 [32mbuilding ssr environment for production...[36m[39m
+transforming...
+[32m??[39m 5 modules transformed.
+rendering chunks...
+[2mout/main/[22m[36mindex.js  [39m[1m[2m13.42 kB[22m[1m[22m
+[32m??built in 101ms[39m
+[36mvite v7.3.1 [32mbuilding ssr environment for production...[36m[39m
+transforming...
+[32m??[39m 1 modules transformed.
+rendering chunks...
+[2mout/preload/[22m[36mindex.js  [39m[1m[2m1.60 kB[22m[1m[22m
+[32m??built in 9ms[39m
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m??[39m 34 modules transformed.
+rendering chunks...
+[2m../../out/renderer/[22m[32mindex.html                 [39m[1m[2m  0.43 kB[22m[1m[22m
+[2m../../out/renderer/[22m[35massets/index-BcKDohDo.css  [39m[1m[2m 33.53 kB[22m[1m[22m
+[2m../../out/renderer/[22m[36massets/index-DcyaHDen.js   [39m[1m[33m602.59 kB[39m[22m
+[32m??built in 746ms[39m
+  ??electron-builder  version=26.8.1 os=10.0.26200
+  ??loaded configuration  file=D:\Project\RiotLogin\Valorant_Login_V26\electron-builder.yml
+  ??skipped dependencies rebuild  reason=npmRebuild is set to false
+  ??packaging       platform=win32 arch=x64 electron=39.8.5 appOutDir=dist\win-unpacked
+  ??searching for node modules  pm=npm searchDir=D:\Project\RiotLogin\Valorant_Login_V26
+  ??duplicate dependency references  dependencies=["@types/node@22.19.15","@types/node@22.19.15","@types/responselike@1.0.3","@types/node@22.19.15","get-stream@5.2.0","responselike@2.0.1","debug@4.4.3","@types/node@22.19.15","debug@4.4.3","once@1.4.0","electron@39.8.5","pump@3.0.4","bindings@1.5.0","bindings@1.5.0","@nut-tree-fork/shared@4.2.6","jimp@0.22.10","@jimp/custom@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/plugin-blit@0.22.12","@jimp/plugin-resize@0.22.12","@jimp/plugin-scale@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/plugin-crop@0.22.12","@jimp/plugin-resize@0.22.12","@jimp/plugin-scale@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/plugin-rotate@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/plugin-blit@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/plugin-blit@0.22.12","@jimp/plugin-crop@0.22.12","@jimp/plugin-resize@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/plugin-resize@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/plugin-blur@0.22.12","@jimp/plugin-resize@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/plugin-color@0.22.12","@jimp/plugin-resize@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12","@jimp/utils@0.22.12","@jimp/custom@0.22.12"]
+  ??updating asar integrity executable resource  executablePath=dist\win-unpacked\valorant-auto-login.exe
+  ??downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  ??downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=1.687s
+  漼?cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+    
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+    
+    Extracting archive: C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\895140275.7z
+    --
+    Path = C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\895140275.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+    
+    
+    Sub items Errors: 2
+    
+    Archives with Errors: 1
+    
+    Sub items Errors: 2
+    
+                    errorOut=ERROR: Cannot create symbolic link : 用戶端沒有這項特殊權限。 : C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\895140275\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : 用戶端沒有這項特殊權限。 : C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\895140275\darwin\10.12\lib\libssl.dylib
+    
+                    command='D:\Project\RiotLogin\Valorant_Login_V26\node_modules\7zip-bin\win\x64\7za.exe' x -snld -bd 'C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\895140275.7z' '-oC:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\895140275'
+                    workingDir=C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign
+  ??downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  ??downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=1.519s
+  漼?cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+    
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+    
+    Extracting archive: C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\666720087.7z
+    --
+    Path = C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\666720087.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+    
+    
+    Sub items Errors: 2
+    
+    Archives with Errors: 1
+    
+    Sub items Errors: 2
+    
+                    errorOut=ERROR: Cannot create symbolic link : 用戶端沒有這項特殊權限。 : C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\666720087\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : 用戶端沒有這項特殊權限。 : C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\666720087\darwin\10.12\lib\libssl.dylib
+    
+                    command='D:\Project\RiotLogin\Valorant_Login_V26\node_modules\7zip-bin\win\x64\7za.exe' x -snld -bd 'C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\666720087.7z' '-oC:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\666720087'
+                    workingDir=C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign
+  ??downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  ??downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=1.619s
+  漼?cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+    
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+    
+    Extracting archive: C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\810692807.7z
+    --
+    Path = C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\810692807.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+    
+    
+    Sub items Errors: 2
+    
+    Archives with Errors: 1
+    
+    Sub items Errors: 2
+    
+                    errorOut=ERROR: Cannot create symbolic link : 用戶端沒有這項特殊權限。 : C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\810692807\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : 用戶端沒有這項特殊權限。 : C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\810692807\darwin\10.12\lib\libssl.dylib
+    
+                    command='D:\Project\RiotLogin\Valorant_Login_V26\node_modules\7zip-bin\win\x64\7za.exe' x -snld -bd 'C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\810692807.7z' '-oC:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\810692807'
+                    workingDir=C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign
+  ??downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  ??downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=1.394s
+  漼?cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+    
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+    
+    Extracting archive: C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\952427883.7z
+    --
+    Path = C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\952427883.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+    
+    
+    Sub items Errors: 2
+    
+    Archives with Errors: 1
+    
+    Sub items Errors: 2
+    
+                    errorOut=ERROR: Cannot create symbolic link : 用戶端沒有這項特殊權限。 : C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\952427883\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : 用戶端沒有這項特殊權限。 : C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\952427883\darwin\10.12\lib\libssl.dylib
+    
+                    command='D:\Project\RiotLogin\Valorant_Login_V26\node_modules\7zip-bin\win\x64\7za.exe' x -snld -bd 'C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\952427883.7z' '-oC:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign\952427883'
+                    workingDir=C:\Users\PC\AppData\Local\electron-builder\Cache\winCodeSign
